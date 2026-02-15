@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-
+import { motion, AnimatePresence } from "framer-motion";
+import toast from "react-hot-toast";
 
 import API from "../services/api";
 import socket from "../services/socket";
+import ConfirmModal from "./ConfirmModal";
 import "./Board.css";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,10 +23,11 @@ const columns = ["To Do", "Doing", "Done"];
 const columnOrder = ["To Do", "Doing", "Done"];
 
 /* ======================
-   Task Item Component
+   Task Item
 ====================== */
 const TaskItem = ({ task, refresh }) => {
   const [editing, setEditing] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
   const [newDescription, setNewDescription] = useState(task.description);
 
@@ -37,6 +40,7 @@ const TaskItem = ({ task, refresh }) => {
       listName: columnOrder[newIndex],
     });
 
+    toast.success("Task moved");
     socket.emit("taskUpdated", { boardId: task.boardId });
     refresh();
   };
@@ -47,71 +51,88 @@ const TaskItem = ({ task, refresh }) => {
       description: newDescription,
     });
 
+    toast.success("Task updated");
     setEditing(false);
     socket.emit("taskUpdated", { boardId: task.boardId });
     refresh();
   };
 
   const deleteTask = async () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this task?"
-    );
-    if (!confirmDelete) return;
-
     await API.delete(`/tasks/${task._id}`);
+    toast.success("Task deleted");
     socket.emit("taskUpdated", { boardId: task.boardId });
     refresh();
+    setShowModal(false);
   };
 
   return (
-    <div className="task-card">
-      {editing ? (
-        <>
-          <input
-            value={newTitle}
-            onChange={(e) => setNewTitle(e.target.value)}
-          />
-          <input
-            value={newDescription}
-            onChange={(e) => setNewDescription(e.target.value)}
-          />
-        </>
-      ) : (
-        <>
-          <h4>{task.title}</h4>
-          <p>{task.description}</p>
-        </>
-      )}
-
-      <div className="task-buttons">
-        <button className="move-btn" onClick={() => moveTask(-1)}>
-          <FontAwesomeIcon icon={faArrowLeft} />
-        </button>
-
-        <button className="move-btn" onClick={() => moveTask(1)}>
-          <FontAwesomeIcon icon={faArrowRight} />
-        </button>
-
+    <>
+      <motion.div
+        className="task-card"
+        layout
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0 }}
+      >
         {editing ? (
-          <button className="save-btn" onClick={saveEdit}>
-            <FontAwesomeIcon icon={faSave} /> Save
-          </button>
+          <>
+            <input
+              value={newTitle}
+              onChange={(e) => setNewTitle(e.target.value)}
+            />
+            <input
+              value={newDescription}
+              onChange={(e) => setNewDescription(e.target.value)}
+            />
+          </>
         ) : (
-          <button className="edit-btn" onClick={() => setEditing(true)}>
-            <FontAwesomeIcon icon={faPen} /> Edit
-          </button>
+          <>
+            <h4>{task.title}</h4>
+            <p>{task.description}</p>
+          </>
         )}
 
-        <button className="delete-btn" onClick={deleteTask}>
-          <FontAwesomeIcon icon={faTrash} /> Delete
-        </button>
-      </div>
-    </div>
+        <div className="task-buttons">
+          <button className="move-btn" onClick={() => moveTask(-1)}>
+            <FontAwesomeIcon icon={faArrowLeft} />
+          </button>
+
+          <button className="move-btn" onClick={() => moveTask(1)}>
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
+
+          {editing ? (
+            <button className="save-btn" onClick={saveEdit}>
+              <FontAwesomeIcon icon={faSave} /> Save
+            </button>
+          ) : (
+            <button className="edit-btn" onClick={() => setEditing(true)}>
+              <FontAwesomeIcon icon={faPen} /> Edit
+            </button>
+          )}
+
+          <button
+            className="delete-btn"
+            onClick={() => setShowModal(true)}
+          >
+            <FontAwesomeIcon icon={faTrash} /> Delete
+          </button>
+        </div>
+      </motion.div>
+
+      {showModal && (
+        <ConfirmModal
+          message="Are you sure you want to delete this task?"
+          onConfirm={deleteTask}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
+    </>
   );
 };
 
 /* ======================
-   Main Board Component
+   Board Component
 ====================== */
 const Board = () => {
   const navigate = useNavigate();
@@ -148,12 +169,12 @@ const Board = () => {
       listName: newStatus,
     });
 
+    toast.success("Task added");
     socket.emit("taskUpdated", { boardId: BOARD_ID });
     fetchTasks();
 
     setNewTitle("");
     setNewDescription("");
-    setNewStatus("To Do");
   };
 
   useEffect(() => {
@@ -166,9 +187,7 @@ const Board = () => {
   return (
     <>
       <div className="board-header">
-        <div className="header-left">
-          Task Board
-        </div>
+        <div>Task Board</div>
 
         <div className="header-right">
           <span>Welcome, {username}</span>
@@ -180,28 +199,23 @@ const Board = () => {
 
       <div className="entry-row">
         <input
-          type="text"
           placeholder="Task Title"
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
         />
-
         <input
-          type="text"
           placeholder="Description"
           value={newDescription}
           onChange={(e) => setNewDescription(e.target.value)}
         />
-
         <select
           value={newStatus}
           onChange={(e) => setNewStatus(e.target.value)}
         >
-          <option value="To Do">To Do</option>
-          <option value="Doing">Doing</option>
-          <option value="Done">Done</option>
+          <option>To Do</option>
+          <option>Doing</option>
+          <option>Done</option>
         </select>
-
         <button onClick={handleAddTask}>Add</button>
       </div>
 
@@ -219,15 +233,17 @@ const Board = () => {
             <tr>
               {columns.map((col) => (
                 <td key={col}>
-                  {tasks
-                    .filter((task) => task.listName === col)
-                    .map((task) => (
-                      <TaskItem
-                        key={task._id}
-                        task={task}
-                        refresh={fetchTasks}
-                      />
-                    ))}
+                  <AnimatePresence>
+                    {tasks
+                      .filter((task) => task.listName === col)
+                      .map((task) => (
+                        <TaskItem
+                          key={task._id}
+                          task={task}
+                          refresh={fetchTasks}
+                        />
+                      ))}
+                  </AnimatePresence>
                 </td>
               ))}
             </tr>
