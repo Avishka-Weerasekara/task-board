@@ -1,4 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+
+
 import API from "../services/api";
 import socket from "../services/socket";
 import "./Board.css";
@@ -17,7 +21,7 @@ const columns = ["To Do", "Doing", "Done"];
 const columnOrder = ["To Do", "Doing", "Done"];
 
 /* ======================
-   Task Item
+   Task Item Component
 ====================== */
 const TaskItem = ({ task, refresh }) => {
   const [editing, setEditing] = useState(false);
@@ -107,9 +111,23 @@ const TaskItem = ({ task, refresh }) => {
 };
 
 /* ======================
-   Main Board
+   Main Board Component
 ====================== */
 const Board = () => {
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
+  let username = "";
+  if (token) {
+    const decoded = jwtDecode(token);
+    username = decoded.username;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const [tasks, setTasks] = useState([]);
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -147,7 +165,18 @@ const Board = () => {
 
   return (
     <>
-      <div className="board-header">Task Board</div>
+      <div className="board-header">
+        <div className="header-left">
+          Task Board
+        </div>
+
+        <div className="header-right">
+          <span>Welcome, {username}</span>
+          <button onClick={handleLogout} className="logout-btn">
+            Logout
+          </button>
+        </div>
+      </div>
 
       <div className="entry-row">
         <input

@@ -1,4 +1,6 @@
-/* Reset */
+/* =========================
+   GLOBAL RESET
+========================= */
 * {
   box-sizing: border-box;
 }
@@ -10,20 +12,54 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: #2c3e50; /* Force default text color */
+  color: #2c3e50;
 }
 
-/* Header */
+/* =========================
+   HEADER
+========================= */
 .board-header {
   margin-top: 40px;
   margin-bottom: 30px;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: bold;
   color: #2c3e50;
-  text-align: center;
+  width: 1000px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-/* Entry Row */
+.header-left {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 16px;
+}
+
+.logout-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 6px;
+  background: #e74c3c;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #c0392b;
+}
+
+/* =========================
+   ENTRY ROW (ADD TASK)
+========================= */
 .entry-row {
   width: 1000px;
   margin-bottom: 25px;
@@ -39,7 +75,7 @@ body {
   border: 1px solid #ccc;
   width: 200px;
   background: white;
-  color: #2c3e50;   /* FIX TEXT COLOR */
+  color: #2c3e50;
   font-size: 14px;
 }
 
@@ -58,7 +94,9 @@ body {
   background: #27ae60;
 }
 
-/* Board Container */
+/* =========================
+   BOARD CONTAINER
+========================= */
 .board-container {
   width: 1000px;
   min-height: 500px;
@@ -68,7 +106,9 @@ body {
   overflow: hidden;
 }
 
-/* Table */
+/* =========================
+   TABLE
+========================= */
 .task-table {
   width: 100%;
   border-collapse: collapse;
@@ -98,7 +138,9 @@ body {
   border-right: none;
 }
 
-/* Task Card */
+/* =========================
+   TASK CARD
+========================= */
 .task-card {
   background: #f8f9fb;
   padding: 20px;
@@ -108,7 +150,7 @@ body {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   text-align: center;
   transition: all 0.3s ease;
-  color: #2c3e50; /* FORCE TEXT COLOR */
+  color: #2c3e50;
 }
 
 .task-card:hover {
@@ -128,7 +170,7 @@ body {
   color: #555;
 }
 
-/* Task Edit Inputs */
+/* Edit mode inputs */
 .task-card input {
   padding: 6px;
   margin-bottom: 8px;
@@ -139,7 +181,9 @@ body {
   color: #2c3e50;
 }
 
-/* Buttons */
+/* =========================
+   BUTTONS
+========================= */
 .task-buttons {
   display: flex;
   justify-content: center;
