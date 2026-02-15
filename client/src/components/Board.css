@@ -1,0 +1,135 @@
+/* Reset */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(to right, #eef2f7, #d9e2ec);
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* center everything horizontally */
+}
+
+/* Header */
+.board-header {
+  margin-top: 40px;
+  margin-bottom: 30px;
+  font-size: 36px;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+}
+
+/* Fixed container */
+.board-container {
+  width: 1000px;
+  min-height: 500px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+/* Table */
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+/* Header row */
+.task-table thead {
+  background: #34495e;
+  color: white;
+}
+
+.task-table th {
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* Table cells */
+.task-table td {
+  vertical-align: top;
+  padding: 30px;
+  border-right: 1px solid #ddd;
+  width: 33.33%;
+  text-align: center;
+}
+
+.task-table td:last-child {
+  border-right: none;
+}
+
+/* Task card */
+.task-card {
+  background: #f8f9fb;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 0 auto 20px auto;
+  width: 80%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.task-card:hover {
+  transform: scale(1.03);
+}
+
+.task-card h4 {
+  margin: 0;
+  font-size: 18px;
+  color: #2c3e50;
+}
+
+.task-card p {
+  margin: 8px 0 15px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.task-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.move-btn {
+  padding: 6px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #3498db;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.move-btn:hover {
+  background: #2980b9;
+}
+
+.add-form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.add-form input {
+  padding: 8px;
+  margin: 0 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.add-form button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  background: #2ecc71;
+  color: white;
+  cursor: pointer;
+}
