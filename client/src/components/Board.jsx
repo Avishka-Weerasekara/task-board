@@ -3,63 +3,27 @@ import API from "../services/api";
 import socket from "../services/socket";
 import "./Board.css";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faArrowRight,
+  faPen,
+  faTrash,
+  faSave
+} from "@fortawesome/free-solid-svg-icons";
+
 const BOARD_ID = "board1";
 const columns = ["To Do", "Doing", "Done"];
 const columnOrder = ["To Do", "Doing", "Done"];
 
-/* =========================
-   ADD TASK FORM
-========================= */
-const AddTaskForm = ({ refresh }) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!title) return;
-
-    await API.post("/tasks", {
-      title,
-      description,
-      boardId: BOARD_ID,
-      listName: "To Do",
-    });
-
-    socket.emit("taskUpdated", { boardId: BOARD_ID });
-    refresh();
-
-    setTitle("");
-    setDescription("");
-  };
-
-  return (
-    <form className="add-form" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Task Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <input
-        type="text"
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      />
-      <button type="submit">Add</button>
-    </form>
-  );
-};
-
-/* =========================
-   TASK ITEM
-========================= */
+/* ======================
+   Task Item
+====================== */
 const TaskItem = ({ task, refresh }) => {
   const [editing, setEditing] = useState(false);
   const [newTitle, setNewTitle] = useState(task.title);
   const [newDescription, setNewDescription] = useState(task.description);
 
-  /* MOVE TASK */
   const moveTask = async (direction) => {
     const currentIndex = columnOrder.indexOf(task.listName);
     const newIndex = currentIndex + direction;
@@ -73,7 +37,6 @@ const TaskItem = ({ task, refresh }) => {
     refresh();
   };
 
-  /* SAVE EDIT */
   const saveEdit = async () => {
     await API.put(`/tasks/${task._id}`, {
       title: newTitle,
@@ -85,17 +48,19 @@ const TaskItem = ({ task, refresh }) => {
     refresh();
   };
 
-  /* DELETE TASK */
   const deleteTask = async () => {
-    await API.delete(`/tasks/${task._id}`);
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this task?"
+    );
+    if (!confirmDelete) return;
 
+    await API.delete(`/tasks/${task._id}`);
     socket.emit("taskUpdated", { boardId: task.boardId });
     refresh();
   };
 
   return (
     <div className="task-card">
-
       {editing ? (
         <>
           <input
@@ -115,30 +80,62 @@ const TaskItem = ({ task, refresh }) => {
       )}
 
       <div className="task-buttons">
-        <button onClick={() => moveTask(-1)}>◀</button>
-        <button onClick={() => moveTask(1)}>▶</button>
+        <button className="move-btn" onClick={() => moveTask(-1)}>
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </button>
+
+        <button className="move-btn" onClick={() => moveTask(1)}>
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
 
         {editing ? (
-          <button onClick={saveEdit}>Save</button>
+          <button className="save-btn" onClick={saveEdit}>
+            <FontAwesomeIcon icon={faSave} /> Save
+          </button>
         ) : (
-          <button onClick={() => setEditing(true)}>Edit</button>
+          <button className="edit-btn" onClick={() => setEditing(true)}>
+            <FontAwesomeIcon icon={faPen} /> Edit
+          </button>
         )}
 
-        <button onClick={deleteTask}>Delete</button>
+        <button className="delete-btn" onClick={deleteTask}>
+          <FontAwesomeIcon icon={faTrash} /> Delete
+        </button>
       </div>
     </div>
   );
 };
 
-/* =========================
-   MAIN BOARD
-========================= */
+/* ======================
+   Main Board
+====================== */
 const Board = () => {
   const [tasks, setTasks] = useState([]);
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newStatus, setNewStatus] = useState("To Do");
 
   const fetchTasks = async () => {
     const res = await API.get(`/tasks/${BOARD_ID}`);
     setTasks(res.data);
+  };
+
+  const handleAddTask = async () => {
+    if (!newTitle) return;
+
+    await API.post("/tasks", {
+      title: newTitle,
+      description: newDescription,
+      boardId: BOARD_ID,
+      listName: newStatus,
+    });
+
+    socket.emit("taskUpdated", { boardId: BOARD_ID });
+    fetchTasks();
+
+    setNewTitle("");
+    setNewDescription("");
+    setNewStatus("To Do");
   };
 
   useEffect(() => {
@@ -152,7 +149,32 @@ const Board = () => {
     <>
       <div className="board-header">Task Board</div>
 
-      <AddTaskForm refresh={fetchTasks} />
+      <div className="entry-row">
+        <input
+          type="text"
+          placeholder="Task Title"
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+        />
+
+        <input
+          type="text"
+          placeholder="Description"
+          value={newDescription}
+          onChange={(e) => setNewDescription(e.target.value)}
+        />
+
+        <select
+          value={newStatus}
+          onChange={(e) => setNewStatus(e.target.value)}
+        >
+          <option value="To Do">To Do</option>
+          <option value="Doing">Doing</option>
+          <option value="Done">Done</option>
+        </select>
+
+        <button onClick={handleAddTask}>Add</button>
+      </div>
 
       <div className="board-container">
         <table className="task-table">
@@ -163,6 +185,7 @@ const Board = () => {
               ))}
             </tr>
           </thead>
+
           <tbody>
             <tr>
               {columns.map((col) => (
