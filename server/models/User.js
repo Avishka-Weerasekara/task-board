@@ -10,6 +10,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   }
-});
+}, { collection: 'Users' });
 
 module.exports = mongoose.model("User", userSchema);

@@ -1,0 +1,35 @@
+{
+  "users": [
+    {
+      "_id": "69921f3eff01cb6816d383f6",
+      "username": "Avishka@gmail.com",
+      "password": "$2b$10$iJXuw74Y8RMW0/1Sv5vMieqP6WNzmlRGbzA701GQ1Z.aAyeHO.2xS",
+      "__v": 0
+    },
+    {
+      "_id": "699224612b00109faf57f98b",
+      "username": "Test@gmail.com",
+      "password": "$2b$10$i4OyKHFJx.QIJPPR7tIHfOhlLnkIv9/b2FIo9o/FayZvhZYfxuUZm",
+      "__v": 0
+    },
+    {
+      "_id": "699988437932e31d63912c0a",
+      "username": "Lasith@gmail.com",
+      "password": "$2b$10$jQBg.DwPpcdOd2Zw.pbNwO6IkabA.Q1sEm3Tar6TIF7QyIC4biNBi",
+      "__v": 0
+    }
+  ],
+  "tasks": [
+    {
+      "_id": "699987507932e31d63912bfe",
+      "title": "Subs",
+      "description": "Numbers",
+      "boardId": "room-main",
+      "listName": "To Do",
+      "userId": "699224612b00109faf57f98b",
+      "createdAt": "2026-02-21T10:22:08.666Z",
+      "updatedAt": "2026-02-21T10:30:34.122Z",
+      "__v": 0
+    }
+  ]
+}
