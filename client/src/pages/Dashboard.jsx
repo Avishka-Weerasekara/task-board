@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUser, faUserGroup, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -38,17 +40,23 @@ const Dashboard = () => {
 
             <div className="dashboard-cards">
                 <div className="dashboard-card" onClick={() => handleCardClick("personal")}>
+                    <div className="card-icon">
+                        <FontAwesomeIcon icon={faUser} />
+                    </div>
                     <h2>Personal Task Manager</h2>
                     <p>Manage your own tasks and personal goals in a private space.</p>
                 </div>
                 <div className="dashboard-card" onClick={() => handleCardClick("room")}>
+                    <div className="card-icon">
+                        <FontAwesomeIcon icon={faUserGroup} />
+                    </div>
                     <h2>Room Task Manager</h2>
                     <p>Collaborate with others on shared projects and assignments.</p>
                 </div>
             </div>
 
             <button className="dashboard-logout" onClick={handleLogout}>
-                Logout
+                <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
             </button>
         </div>
     );

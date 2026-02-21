@@ -15,7 +15,8 @@ import {
   faArrowRight,
   faPen,
   faTrash,
-  faSave
+  faSave,
+  faPowerOff
 } from "@fortawesome/free-solid-svg-icons";
 
 // Dynamic boardId will be extracted via useParams
@@ -90,21 +91,25 @@ const TaskItem = ({ task, refresh, username }) => {
             />
           </>
         ) : (
-          <>
+          <div className="task-content">
             <h4>{task.title}</h4>
             <div className="task-email">{task.userEmail}</div>
             <p>{task.description}</p>
-          </>
+          </div>
         )}
 
         <div className="task-buttons">
-          <button className="move-btn" onClick={() => moveTask(-1)}>
-            <FontAwesomeIcon icon={faArrowLeft} />
-          </button>
+          {task.listName !== "To Do" && (
+            <button className="move-btn" onClick={() => moveTask(-1)}>
+              <FontAwesomeIcon icon={faArrowLeft} />
+            </button>
+          )}
 
-          <button className="move-btn" onClick={() => moveTask(1)}>
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
+          {task.listName !== "Done" && (
+            <button className="move-btn" onClick={() => moveTask(1)}>
+              <FontAwesomeIcon icon={faArrowRight} />
+            </button>
+          )}
 
           {editing ? (
             <button className="save-btn" onClick={saveEdit}>
@@ -199,43 +204,45 @@ const Board = () => {
   }, [boardId, username]);
 
   return (
-    <>
+    <div className="board-page-wrapper">
       <div className="board-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <button className="back-btn" onClick={goToDashboard} style={{ background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer' }}>
+        <div className="header-left">
+          <button className="back-btn" onClick={goToDashboard}>
             <FontAwesomeIcon icon={faArrowLeft} /> Back
           </button>
           <h2>{boardId === "personal" ? "Private Personal Workspace" : "Shared Room Workspace"}</h2>
         </div>
 
         <div className="header-right">
-          <span>Welcome, {username}</span>
+          <span className="welcome-text">Welcome, {username}</span>
           <button onClick={handleLogout} className="logout-btn">
-            Logout
+            <FontAwesomeIcon icon={faPowerOff} /> Logout
           </button>
         </div>
       </div>
 
-      <div className="entry-row">
-        <input
-          placeholder="Task Title"
-          value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
-        />
-        <input
-          placeholder="Description"
-          value={newDescription}
-          onChange={(e) => setNewDescription(e.target.value)}
-        />
-        <select
-          value={newStatus}
-          onChange={(e) => setNewStatus(e.target.value)}
-        >
-          <option>To Do</option>
-          <option>Doing</option>
-          <option>Done</option>
-        </select>
-        <button onClick={handleAddTask}>Add</button>
+      <div className="entry-row-container">
+        <div className="entry-row">
+          <input
+            placeholder="Task Title"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+          />
+          <input
+            placeholder="Description"
+            value={newDescription}
+            onChange={(e) => setNewDescription(e.target.value)}
+          />
+          <select
+            value={newStatus}
+            onChange={(e) => setNewStatus(e.target.value)}
+          >
+            <option>To Do</option>
+            <option>Doing</option>
+            <option>Done</option>
+          </select>
+          <button className="add-task-btn" onClick={handleAddTask}>Add Task</button>
+        </div>
       </div>
 
       <div className="board-container">
@@ -270,7 +277,7 @@ const Board = () => {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 };
 
