@@ -89,6 +89,27 @@ body {
   font-weight: 500;
 }
 
+.invite-btn {
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #3498db !important;
+  color: white !important;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: 0.3s;
+  box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3) !important;
+}
+
+.invite-btn:hover {
+  background: #2980b9 !important;
+  transform: translateY(-2px);
+}
+
 .logout-btn {
   padding: 0.6rem 1rem;
   border: none;
@@ -401,4 +422,106 @@ body {
 
 .cancel-btn:hover {
   background: #bdc3c7;
+}
+
+/* =========================
+   INVITE MODAL SPECIFICS
+========================= */
+.invite-modal-box {
+  width: 380px;
+  padding: 35px 30px;
+}
+
+.invite-modal-box h3 {
+  margin-top: 0;
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+}
+
+.invite-modal-box p {
+  font-size: 0.95rem;
+  color: #7f8c8d;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.invite-email-input {
+  width: 100%;
+  padding: 12px 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+.invite-email-input:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.invite-confirm-btn {
+  background: #3498db;
+}
+
+.invite-confirm-btn:hover {
+  background: #2980b9;
+}
+
+.invite-divider {
+  margin: 25px 0 20px 0;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #95a5a6;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.invite-divider::before,
+.invite-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.invite-divider span {
+  padding: 0 15px;
+}
+
+.copy-link-section {
+  display: flex;
+  gap: 10px;
+}
+
+.copy-link-input {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background: #f8fcfd;
+  color: #7f8c8d;
+  font-size: 0.85rem;
+  outline: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copy-link-btn {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.copy-link-btn:hover {
+  background: #27ae60;
+  transform: translateY(-1px);
 }

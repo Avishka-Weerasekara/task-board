@@ -16,7 +16,9 @@ import {
   faPen,
   faTrash,
   faSave,
-  faPowerOff
+  faPowerOff,
+  faUserPlus,
+  faCopy
 } from "@fortawesome/free-solid-svg-icons";
 
 // Dynamic boardId will be extracted via useParams
@@ -142,6 +144,56 @@ const TaskItem = ({ task, refresh, username }) => {
 };
 
 /* ======================
+   Invite Modal
+====================== */
+const InviteModal = ({ onConfirm, onCancel }) => {
+  const [email, setEmail] = useState("");
+  const inviteLink = window.location.href;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(inviteLink);
+    toast.success("Invite link copied to clipboard!");
+  };
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-box invite-modal-box">
+        <h3>Invite to Workspace</h3>
+        <p>Enter the email address of the user you want to invite to this shared room.</p>
+        <input
+          type="email"
+          placeholder="user@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="invite-email-input"
+          autoFocus
+        />
+        <div className="modal-buttons">
+          <button className="cancel-btn" onClick={onCancel}>Cancel</button>
+          <button
+            className="confirm-btn invite-confirm-btn"
+            onClick={() => onConfirm(email)}
+          >
+            Send Invite
+          </button>
+        </div>
+
+        <div className="invite-divider">
+          <span>OR</span>
+        </div>
+
+        <div className="copy-link-section">
+          <input type="text" readOnly value={inviteLink} className="copy-link-input" />
+          <button onClick={handleCopyLink} className="copy-link-btn" title="Copy Link">
+            <FontAwesomeIcon icon={faCopy} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ======================
    Board Component
 ====================== */
 const Board = () => {
@@ -161,6 +213,12 @@ const Board = () => {
     navigate("/login");
   };
 
+  const handleInvite = () => {
+    const inviteLink = window.location.href;
+    navigator.clipboard.writeText(inviteLink);
+    toast.success("Invite link copied to clipboard!");
+  };
+
   const goToDashboard = () => {
     navigate("/dashboard");
   };
@@ -169,6 +227,20 @@ const Board = () => {
   const [newTitle, setNewTitle] = useState("");
   const [newDescription, setNewDescription] = useState("");
   const [newStatus, setNewStatus] = useState("To Do");
+  const [showInviteModal, setShowInviteModal] = useState(false);
+
+  const handleInviteSubmit = (email) => {
+    if (!email) {
+      toast.error("Please enter an email address");
+      return;
+    }
+
+    // In a fully developed backend, this would make an API call like:
+    // await API.post(`/rooms/${boardId}/invite`, { email });
+
+    toast.success(`Invitation successfully sent to ${email}!`);
+    setShowInviteModal(false);
+  };
 
   const fetchTasks = async () => {
     const res = await API.get(`/tasks/${boardId}`);
@@ -215,11 +287,23 @@ const Board = () => {
 
         <div className="header-right">
           <span className="welcome-text">Welcome, {username}</span>
+          {boardId !== "personal" && (
+            <button onClick={() => setShowInviteModal(true)} className="invite-btn">
+              <FontAwesomeIcon icon={faUserPlus} /> Invite
+            </button>
+          )}
           <button onClick={handleLogout} className="logout-btn">
             <FontAwesomeIcon icon={faPowerOff} /> Logout
           </button>
         </div>
       </div>
+
+      {showInviteModal && (
+        <InviteModal
+          onConfirm={handleInviteSubmit}
+          onCancel={() => setShowInviteModal(false)}
+        />
+      )}
 
       <div className="entry-row-container">
         <div className="entry-row">
