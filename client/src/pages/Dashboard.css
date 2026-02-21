@@ -120,6 +120,73 @@
   background: #db5e55 !important;
 }
 
+/* Shared Workspaces Section styling */
+.shared-workspaces-section {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+}
+
+.shared-workspaces-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 600;
+  text-align: center;
+}
+
+.workspace-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+.workspace-list-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.workspace-list-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.ws-icon {
+  font-size: 2rem;
+  color: #3498db;
+}
+
+.ws-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.ws-details h4 {
+  margin: 0 0 0.3rem 0;
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.ws-details span {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
   .dashboard-cards {

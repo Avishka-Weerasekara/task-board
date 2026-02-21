@@ -1,7 +1,9 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faUserGroup, faArrowRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faUser, faUserGroup, faArrowRightFromBracket, faPlus, faUsersRectangle } from "@fortawesome/free-solid-svg-icons";
+import API from "../services/api";
 import "./Dashboard.css";
 
 const Dashboard = () => {
@@ -18,11 +20,34 @@ const Dashboard = () => {
         }
     }
 
+    const [workspaces, setWorkspaces] = useState([]);
+
+    useEffect(() => {
+        const fetchWorkspaces = async () => {
+            try {
+                const res = await API.get("/workspaces");
+                setWorkspaces(res.data);
+            } catch (err) {
+                console.error(err);
+            }
+        };
+        if (token) fetchWorkspaces();
+    }, [token]);
+
+    const handleCreateRoom = async () => {
+        try {
+            const res = await API.post("/workspaces", { name: `${username}'s Workspace` });
+            navigate(`/board/${res.data.roomId}`);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
     const handleCardClick = (type) => {
         if (type === "personal") {
             navigate(`/board/personal`);
         } else {
-            navigate(`/board/room-main`);
+            handleCreateRoom();
         }
     };
 
@@ -50,10 +75,31 @@ const Dashboard = () => {
                     <div className="card-icon">
                         <FontAwesomeIcon icon={faUserGroup} />
                     </div>
-                    <h2>Room Task Manager</h2>
-                    <p>Collaborate with others on shared projects and assignments.</p>
+                    <h2>Create Shared Workspace</h2>
+                    <p>Generate a secure room and distribute links to collaborate.</p>
                 </div>
             </div>
+
+            {workspaces.length > 0 && (
+                <div className="shared-workspaces-section">
+                    <h3>Your Shared Workspaces</h3>
+                    <div className="workspace-list">
+                        {workspaces.map((ws) => (
+                            <div
+                                key={ws._id}
+                                className="workspace-list-item"
+                                onClick={() => navigate(`/board/${ws.roomId}`)}
+                            >
+                                <FontAwesomeIcon icon={faUsersRectangle} className="ws-icon" />
+                                <div className="ws-details">
+                                    <h4>{ws.name}</h4>
+                                    <span>ID: {ws.roomId}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <button className="dashboard-logout" onClick={handleLogout}>
                 <FontAwesomeIcon icon={faArrowRightFromBracket} /> Logout
