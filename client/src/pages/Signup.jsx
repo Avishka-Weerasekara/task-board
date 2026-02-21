@@ -24,27 +24,31 @@ const Signup = () => {
 
   return (
     <div className="auth-container">
-      <h2>Signup</h2>
+      <div className="auth-card">
+        <h2>Signup</h2>
 
-      <input
-        placeholder="Username"
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        <div className="auth-input-group">
+          <input
+            placeholder="Username"
+            onChange={(e) => setUsername(e.target.value)}
+          />
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) => setPassword(e.target.value)}
-      />
+          <input
+            type="password"
+            placeholder="Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
 
-      <button onClick={handleSignup}>Signup</button>
+        <button onClick={handleSignup}>Signup</button>
 
-      <p>
-        Already have an account?{" "}
-        <span onClick={() => navigate("/login")} className="link">
-          Login
-        </span>
-      </p>
+        <p className="auth-footer">
+          Already have an account?{" "}
+          <span onClick={() => navigate("/login")} className="link">
+            Login
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

@@ -4,47 +4,145 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
   padding: 2rem;
+  /* Fuji-style Sunrise Mountain background */
+  background: url('https://images.unsplash.com/photo-1542224566-6e85f2e6772f?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat fixed;
 }
 
 .auth-container h1 {
-  font-size: 2.3rem;
+  font-size: 3rem;
+  color: #ffffff;
+  text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   font-weight: 700;
-  letter-spacing: -0.02em;
+  text-align: center;
 }
 
-.auth-container h2 {
-  color: var(--text-muted);
-  margin-bottom: 2rem;
+/* Home Page specific buttons */
+.home-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 2rem;
 }
 
+.home-buttons button {
+  background: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: #fff !important;
+  padding: 0.8rem 2.5rem;
+  font-size: 1.1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: 0.2s ease;
+}
+
+.home-buttons button:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism Card for Form */
 .auth-card {
-  background: var(--surface-color);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-  box-shadow: var(--shadow-md);
-  padding: 2.8rem;
-  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  padding: 3.5rem 3rem;
+  border-radius: 4px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
 }
 
-.auth-card button {
-  margin-top: 1rem;
-  padding: 0.75rem;
-  width: 100%;
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  border: none;
+.auth-card h2 {
+  text-align: center;
+  color: #222;
+  font-size: 2.2rem;
   font-weight: 600;
-  box-shadow: 0 6px 20px rgba(94, 106, 210, 0.4);
+  margin-top: 0;
+  margin-bottom: 3rem;
+  letter-spacing: 0.5px;
+}
+
+/* Input Styles - Underline only */
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.auth-input-group input {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4) !important;
+  border-radius: 0 !important;
+  color: #222 !important;
+  font-size: 1rem;
+  padding: 0.5rem 0.2rem;
+  box-shadow: none !important;
+  transition: 0.2s ease;
+}
+
+.auth-input-group input:focus {
+  outline: none !important;
+  border-bottom: 2px solid #000 !important;
+  box-shadow: none !important;
+}
+
+.auth-input-group input::placeholder {
+  color: #333;
+  font-weight: 500;
+}
+
+/* Login/Signup Solid Blue Button */
+.auth-card button {
+  padding: 0.9rem;
+  width: 100%;
+  background: #2196F3 !important;
+  color: white !important;
+  border: none !important;
+  font-weight: 500;
+  font-size: 1.1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(33, 150, 243, 0.2) !important;
+  transition: 0.2s ease;
 }
 
 .auth-card button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(94, 106, 210, 0.6);
+  background: #1e88e5 !important;
+  transform: translateY(-1px);
 }
 
-.home-buttons button:first-child {
-  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
-  border: none;
+.auth-card button:active {
+  transform: scale(0.98);
+}
+
+/* Footer Link */
+.auth-footer {
+  margin-top: 2rem;
+  text-align: center;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.auth-footer .link {
+  color: #2196F3;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+  margin-left: 0.2rem;
+}
+
+.auth-footer .link:hover {
+  color: #1565C0;
+  text-decoration: underline;
 }
