@@ -71,4 +71,53 @@ router.post("/:roomId/invite", authMiddleware, async (req, res) => {
     }
 });
 
+// Get a specific workspace by roomId
+router.get("/:roomId", authMiddleware, async (req, res) => {
+    try {
+        const { roomId } = req.params;
+        const workspace = await Workspace.findOne({ roomId });
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+        res.json(workspace);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Update a workspace description/name
+router.put("/:roomId", authMiddleware, async (req, res) => {
+    try {
+        const { roomId } = req.params;
+        const { name } = req.body;
+
+        const workspace = await Workspace.findOne({ roomId });
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+
+        workspace.name = name;
+        await workspace.save();
+        res.json(workspace);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Delete a workspace
+router.delete("/:roomId", authMiddleware, async (req, res) => {
+    try {
+        const { roomId } = req.params;
+        const workspace = await Workspace.findOneAndDelete({ roomId });
+        if (!workspace) {
+            return res.status(404).json({ message: "Workspace not found" });
+        }
+        // Ideally we should delete related tasks as well here
+        // await Task.deleteMany({ boardId: roomId });
+        res.json({ message: "Workspace deleted" });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;

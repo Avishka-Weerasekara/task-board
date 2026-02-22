@@ -21,6 +21,7 @@ const Dashboard = () => {
     }
 
     const [workspaces, setWorkspaces] = useState([]);
+    const [joinRoomId, setJoinRoomId] = useState("");
 
     useEffect(() => {
         const fetchWorkspaces = async () => {
@@ -56,6 +57,11 @@ const Dashboard = () => {
         navigate("/login");
     };
 
+    const handleJoinRoom = () => {
+        if (!joinRoomId.trim()) return;
+        navigate(`/board/${joinRoomId.trim()}`);
+    };
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
@@ -77,6 +83,20 @@ const Dashboard = () => {
                     </div>
                     <h2>Create Shared Workspace</h2>
                     <p>Generate a secure room and distribute links to collaborate.</p>
+                </div>
+            </div>
+
+            <div className="join-workspace-section">
+                <h3>Join Existing Workspace</h3>
+                <div className="join-workspace-input-group">
+                    <input
+                        type="text"
+                        placeholder="Enter Room ID (e.g., room-cbcf0bfb)"
+                        value={joinRoomId}
+                        onChange={(e) => setJoinRoomId(e.target.value)}
+                        onKeyDown={(e) => e.key === "Enter" && handleJoinRoom()}
+                    />
+                    <button onClick={handleJoinRoom}>Join</button>
                 </div>
             </div>
 

@@ -187,6 +187,74 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+/* Join Workspace Section styling */
+.join-workspace-section {
+  width: 100%;
+  max-width: 900px;
+  margin-top: 2rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.join-workspace-section h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 600;
+}
+
+.join-workspace-input-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.join-workspace-input-group input {
+  flex: 1;
+  padding: 0.8rem 1.2rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.join-workspace-input-group input:focus {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.join-workspace-input-group input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.join-workspace-input-group button {
+  padding: 0.8rem 2rem;
+  background: #3498db !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.join-workspace-input-group button:hover {
+  background: #2980b9 !important;
+  transform: translateY(-2px);
+}
+
 /* Responsiveness */
 @media (max-width: 768px) {
   .dashboard-cards {
